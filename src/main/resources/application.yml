@@ -1,0 +1,20 @@
+server:
+  port: 6720
+spring:
+  application:
+    name: PassPManagerRest
+  jpa:
+    show-sql: false    
+    properties:
+      hibernate:
+        format_sql: true
+    database-platform: org.hibernate.dialect.DB2Dialect
+    hibernate:      
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      ddl-auto: none
+  datasource:
+    driver-class-name: com.ibm.db2.jcc.DB2Driver
+    url: jdbc:db2://cit-pr:50000/DATACANE
+    username: nagmetkaliev_k
+    password: y*123456
