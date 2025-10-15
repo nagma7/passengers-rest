@@ -1,5 +1,6 @@
 package kz.railways.passp.repository;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.Query;
@@ -8,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 
 import kz.railways.passp.entity.PTeknData;
 
-public interface TabloRepository extends CrudRepository<PTeknData, Long>{
+public interface TabloRepository extends CrudRepository<PTeknData, Timestamp>{
 	@Query(value="SELECT ts1.naim_stan AS stan1, ts2.naim_stan AS stan2, ts3.naim_stan AS name_stan_op, pt.NOM_POEZD, pt.DATE_OP, date(pt.DATE_OP) AS date_op_m, time(pt.DATE_OP) AS time_op, pt.NAPR_POSL, pt.INDEX_POEZD, pt.KDS_T, pt.KOD_PRICH_BROS, pt.KOP_PMD, pt.stan_op FROM "
 			+ "	W_LAYER.VIEW_P_TEKN pt "
 			+ "	LEFT JOIN NSI_LAYER.TN_STAN ts1 ON TS1.KOD_STAN = pt.KSNM_POEZD "

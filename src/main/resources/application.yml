@@ -1,5 +1,5 @@
 server:
-  port: 6720
+  port: 8072
 spring:
   application:
     name: PassPManagerRest
@@ -14,7 +14,17 @@ spring:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
       ddl-auto: none
   datasource:
-    driver-class-name: com.ibm.db2.jcc.DB2Driver
-    url: jdbc:db2://cit-pr:50000/DATACANE
-    username: nagmetkaliev_k
-    password: y*123456
+    db2:
+      driver-class-name: com.ibm.db2.jcc.DB2Driver
+      jdbc-url: jdbc:db2://10.99.2.64:50000/DATACANE
+      username: nagmetkaliev_k
+      password: e*123456  
+    postgres:
+      jdbc-url: jdbc:postgresql://10.64.1.53:5432/pg_db_ic
+      username: postgres
+      password: postgres
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8085/realms/icenter-realm 

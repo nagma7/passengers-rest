@@ -102,6 +102,18 @@ public class TabloService {
 		return ans;
 	}
 	
+	public int getMainPageAllStationByNodData(int regionId, String dateOp) throws ParseException {
+		entityManager.clear();
+		List<Station> stationList = stationService.getAllStationsByRegionId(regionId, dateOp);
+		int res = 0;
+		for(Station station: stationList) {			
+			entityManager.clear();
+			List<Poezd> poezdList = getTabloPribData(station.getCodeStation(), dateOp, 3);
+			res += poezdList.size();			
+		}  		
+		return res;
+	}
+	
 	public List<Poezd> getTabloPribData(int codeSt, String dateOp, int hour) throws ParseException {
 		List<Poezd> poezdList = new ArrayList<>();
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");		
@@ -110,13 +122,9 @@ public class TabloService {
 		int h = Integer.parseInt(String.format("%-4s", hour).replace(' ', '0'));
 		entityManager.clear();
 		if(hour == 8) {
-			System.out.println(dateOp + " 20:00:00");
-			System.out.println(df.format(today));
 			pTeknPribDataList = tabloRepository.getPribData(codeSt, dateOp + " 20:00:00", df.format(today));
 		}
 		else {
-			System.out.println(df.format(new Date(System.currentTimeMillis() - 3600 * h)));
-			System.out.println(df.format(today));
 			pTeknPribDataList = tabloRepository.getPribData(codeSt, df.format(new Date(System.currentTimeMillis() - 3600 * h)), df.format(today));
 		}
 		List<PTeknData> pTeknPribDataNewList = new ArrayList<>();
@@ -265,16 +273,14 @@ public class TabloService {
 		for(PTeknData dataPribPT: pTeknPribDataList) {
 			poezd.setNomPoezd(StringUtils.leftPad(dataPribPT.getNomPoezd(), 3, '0'));
 			poezd.setNamePoezd(dataPribPT.getStan1().trim() + " - " + dataPribPT.getStan2().trim());
-			Station station = new Station();
-			System.out.println("stationname " + dataPribPT.getStanOp());
+			Station station = new Station();			
 			station.setLongName(dataPribPT.getNameStanOp());
 			station.setCodeStation(dataPribPT.getStanOp());
 			if(lastStan == null) {
 				lastStan = new Station();
 				lastStan.setLongName(dataPribPT.getNameStanOp());
 				lastStan.setCodeStation(dataPribPT.getStanOp());
-				Prichina prichinaPrib = new Prichina();
-		        System.out.println("prib cod bros 1 " + dataPribPT.getCodePrichBros());
+				Prichina prichinaPrib = new Prichina();		        
 				prichinaPrib.setCodePrichina(dataPribPT.getCodePrichBros());
 				lastStan.setPrichinaBrosPrib(prichinaPrib);
 			}
@@ -322,8 +328,7 @@ public class TabloService {
 				        LocalTime eventEnd1 = LocalTime.parse(raspOtpr.getVremOtpr(), formatter1);
 				        station.setVremOtprPlan(String.format("%02d", eventEnd1.getHour()) + ":" + String.format("%02d", eventEnd1.getMinute()));
 				        station.setVremOtprFakt(String.format("%02d", eventStart1.getHour()) + ":" + String.format("%02d", eventStart1.getMinute()));
-				        Prichina prichinaOtpr = new Prichina();
-				        System.out.println("otpr cod bros " + dataPribPT.getCodePrichBros());
+				        Prichina prichinaOtpr = new Prichina();				        
 						prichinaOtpr.setCodePrichina(dataPribPT.getCodePrichBros());
 						station.setPrichinaBrosOtpr(prichinaOtpr);
 				        if(eventEnd1.getHour() == 23 && eventStart1.getHour() == 0) {

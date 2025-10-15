@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import kz.railways.passp.entity.RaspData;
 
-public interface RaspRepository extends CrudRepository<RaspData, Long>{
+public interface RaspRepository extends CrudRepository<RaspData, String>{
 	@Query(value="SELECT trp.VREM_PRIB, trp.VREM_OTPR  FROM NSI_LAYER.TN_RASP_PASS trp "
 			+ "	WHERE  "
 			+ "		trp.KOD_STAN = :stan_op AND"
